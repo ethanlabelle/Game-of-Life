@@ -2,14 +2,11 @@
 import pygame
 from pygame import surfarray
 import numpy as np
-from numpy import int32, uint8, uint
+from numpy import int32
 import random
 
-cell_size = 10
+cell_size = 1
 display_size = 1000 
-# Define the background colour
-# using RGB color coding.
-background_colour = (255, 255, 255)
 
 def all_white():
     return 255 * np.ones((display_size, display_size, 3), int32)
@@ -27,7 +24,6 @@ def cells2pixs(board):
                 color_cell(pixel_array, i, j)
     return pixel_array
 
-allWhite = all_white()
 
 # Define the dimensions of
 # screen object(width,height)
@@ -37,7 +33,7 @@ screen = pygame.display.set_mode((display_size, display_size))
 pygame.display.set_caption('Life')
   
 # Fill the background colour to the screen
-surfarray.blit_array(screen, allWhite)
+surfarray.blit_array(screen, all_white())
 
 # Update the display using flip
 pygame.display.flip()
@@ -47,8 +43,6 @@ def is_valid(coord):
     x, y = coord
     return x >= 0 and x < display_size/cell_size and y >= 0 and y <  display_size/cell_size
    
-# if the cell is alive, then it stays alive if it has either 2 or 3 live neighbors
-# if the cell is dead, then it springs to life only in the case it has 3 live neighbors
 board = np.zeros((int(display_size/cell_size), int(display_size/cell_size)), bool) 
 
 def random_board(board):
@@ -63,6 +57,8 @@ pygame.display.flip()
 
 offsets = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, 1), (1, 0), (1, -1)]
 
+# if the cell is alive, then it stays alive if it has either 2 or 3 live neighbors
+# if the cell is dead, then it springs to life only in the case it has 3 live neighbors
 def step(board):
     """board is an array of booleans, returns array of booleans"""
     dims = board.shape
